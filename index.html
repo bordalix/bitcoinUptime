@@ -30,28 +30,34 @@
   </div>
 
   <script>
-    function update() {
+    function displayUptime() {
       // Current time in seconds from the unix epoch start
-      var timenow = new Date().getTime() / 1000;
+      var timenow = Math.floor(new Date().getTime() / 1000);
 
-      // Total downtime
-      // 6:20 of downtime on 3/12/2013 
-      // converted to seconds
-      // source: http://vincesamios.com/bitcoins/accidental-hardfork-the-resilience-of-a-fledgling-bitcoin
-      var downtime = (6*60*60+20*60);
-
+      // Seconds since the bitcoin epoch.
       // Where 1230951265 is the number of seconds since the unix epoch start at
       // the time of the first block on Jan 3 2009 02:54:25 GMT
       var totaltime = timenow - 1230951265;
 
-      var uptime = 100 * (totaltime - downtime) / totaltime;
-      var uptimeString = uptime.toFixed(10).toString().concat(" %");
+      // Downtime for CVE-2010-5139: 8 hours, 27 minutes or 507 minutes = 30420 seconds.
+      // See https://en.bitcoin.it/wiki/Value_overflow_incident
+      // Discussion https://github.com/findbl0k/bitcoinUptime/issues/3
+      var downtime2010 = 30420;
+
+      // Downtime for CVE-2013-3220: 6 hours, 20 minutes or 380 minutes = 22800 seconds.
+      // See https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki
+      var downtime2013 = 22800;
+
+      var downtimeTotal = downtime2010 + downtime2013;
+
+      var uptimePercent = 100 * (totaltime - downtimeTotal) / totaltime;
+      var uptimeString = uptimePercent.toFixed(10).toString().concat(" %");
 
       document.getElementById("uptime-container").innerHTML = uptimeString;
     }
 
-    update();
-    setInterval(update, 200);
+    displayUptime();
+    setInterval(displayUptime, 100);
   </script>
 </body>
 </html>
