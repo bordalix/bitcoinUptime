@@ -1,7 +1,7 @@
 # BitcoinUptime
 A website that continuously calculates bitcoin uptime statistics
 ## Usage
-Navigate to http://bitcoinuptime.com or coinuptime.com. I also own doge.coinuptime.com/ which redirects here since dogecoinuptime has not been developed.
+Navigate to https://bitcoinuptime.ga
 ## Contributing
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
