@@ -5,32 +5,64 @@
   <meta name="description" content="bitcoin network reliability">
   <meta name="keywords" content="bitcoin uptime btc bitcoin network reliability decentralized currency cryptocurrency digital-currency virtual-currency cryptography blockchain block crypto">
   
-  <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="css/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
   <script src="scripts/jquery-3.1.1.min.js"></script>
-  <script src="semantic/semantic.min.js"></script>
+  <script src="scripts/semantic.min.js"></script>
 
 </head>
 <body>
-  <div class="ui container" style="padding-top: 2em; text-align: center;">
-    <h2>The Bitcoin network has been functional for</h2>
 
-    <div class="ui statistic">
-      <h1 id="uptime-container" class="value"></h1>
+  <div id="CVE-2010-5139-modal" class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">CVE-2010-5139</div>
+    <div class="content">
+      <dl>
+        <dt>From</dt>
+        <dd>Aug 16 2010 12:53:59 AM</dd>
+        <dt>Until</dt>
+        <dd>Aug 16 2010 9:20:08 PM</dd>
+        <dt>Downtime</dt>
+        <dd>8 hours and 27 minutes</dd>
+        <dt>Blocks</dt>
+        <dd><a href="https://blockexplorer.com/block/000000000069e1affe7161ab4bcbeacebb4ddf155b50e807f42de971b688a09b">74638</a> to <a href="https://blockexplorer.com/block/00000000005c22d199706df1c38b38d76f8401920dcbe91edf3417f8847da707">74691</a></dd>
+        <dt>Discussion</dt>
+        <dd><a href="https://en.bitcoin.it/wiki/Value_overflow_incident">https://en.bitcoin.it/wiki/Value_overflow_incident</a></dd>
+      </dl>
+    </div>
+  </div>
+
+  <div id="CVE-2013-3220-modal" class="ui modal">
+      <i class="close icon"></i>
+      <div class="header">CVE-2013-3220</div>
+      <div class="content">
+        <dl>
+          <dt>From</dt>
+          <dd>Aug 16 2013 6:49:03 AM</dd>
+          <dt>Until</dt>
+          <dd>Aug 16 2013 1:09:07 PM</dd>
+          <dt>Downtime</dt>
+          <dd>6 hours and 20 minutes</dd>
+          <dt>Blocks</dt>
+          <dd><a href="https://blockexplorer.com/block/0000000000000020dc045c540e8ce5960b3a71e7cec30f2ebd55c373d1eda362">252404</a> to <a href="https://blockexplorer.com/block/0000000000000024b58eeb1134432f00497a6a860412996e7a260f47126eed07">252451</a></dd>
+          <dt>Discussion</dt>
+          <dd><a href="https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki">https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki</a></dd>
+        </dl>
+      </div>
     </div>
 
-    <h2>of the time since its inception on Jan 3 2009 02:54:25 GMT</h2>
+  <div class="ui container" style="padding-top: 2em; text-align: center;">
+    <p>The Bitcoin network is working for</p>
+    <h1 id="uptime-container"></h1>
+    <p>of the time since Jan 3 2009 02:54:25 GMT</p>
 
     <h3 style="margin-top: 5em;">Downtime events</h3>
-    
-    <p><a href="https://en.bitcoin.it/wiki/Value_overflow_incident">CVE-2010-5139:</a> 8 hours and 27 minutes</p>
+    <p><a id="CVE-2010-5139">CVE-2010-5139:</a> 8 hours and 27 minutes</p>
+    <p><a id="CVE-2013-3220">CVE-2013-3220:</a> 6 hours and 20 minutes</p>
 
-    <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki">CVE-2013-3220:</a> 6 hours and 20 minutes</p>
-    
     <h3 style="margin-top: 5em;">Contributions</h3>
-
     <h4>Bitcoin</h4>
     <a title="donations keep this server up :)" href="bitcoin:3J8QGWo5Qjpz5X9kQYK7VnD2p3aXKtTgfM" class="ui labeled icon button"><i class="ui bitcoin icon"></i>3J8QGWo5Qjpz5X9kQYK7VnD2p3aXKtTgfM</a>
-
     <h4>Code</h4>
     <a href="https://github.com/bordalix/bitcoinUptime" class="ui labeled icon button"><i class="ui fork icon"></i>Fork me!</a>
   </div>
@@ -63,7 +95,16 @@
     }
 
     displayUptime();
-    setInterval(displayUptime, 100);
+    setInterval(displayUptime, 1000);
+
+    $(function() {
+      $('#CVE-2010-5139').click(function() {
+        $('#CVE-2010-5139-modal').modal('show');
+      });
+      $('#CVE-2013-3220').click(function() {
+        $('#CVE-2013-3220-modal').modal('show');
+      })
+    });
   </script>
 </body>
 </html>
