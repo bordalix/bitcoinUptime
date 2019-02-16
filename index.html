@@ -60,12 +60,12 @@
 
   <div class="ui container" style="padding-top: 2em; text-align: center;">
     <p>The Bitcoin network is working for</p>
-    <h1 id="uptime-container"></h1>
+    <h1 id="uptime-container">99.98 %</h1>
     <p>of the time since Jan 3 2009 02:54:25 GMT</p>
 
     <h3 style="margin-top: 5em;">Downtime events</h3>
-    <p><a id="CVE-2010-5139">CVE-2010-5139:</a> 8 hours and 27 minutes</p>
-    <p><a id="CVE-2013-3220">CVE-2013-3220:</a> 6 hours and 55 minutes</p>
+    <p><a href="https://en.bitcoin.it/wiki/Value_overflow_incident" id="CVE-2010-5139">CVE-2010-5139:</a> 8 hours and 27 minutes</p>
+    <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki" id="CVE-2013-3220">CVE-2013-3220:</a> 6 hours and 55 minutes</p>
 
     <h3 style="margin-top: 5em;">Contributions</h3>
     <h4>Bitcoin</h4>
@@ -105,9 +105,11 @@
     setInterval(displayUptime, 1000);
 
     $(function() {
+      $('#CVE-2010-5139').removeAttr('href');
       $('#CVE-2010-5139').click(function() {
         $('#CVE-2010-5139-modal').modal('show');
       });
+      $('#CVE-2013-3220').removeAttr('href');
       $('#CVE-2013-3220').click(function() {
         $('#CVE-2013-3220-modal').modal('show');
       })
