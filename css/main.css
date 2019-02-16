@@ -2,18 +2,11 @@ a {
   cursor: pointer;
 }
 
-.ui .modal {
-  width: 550px;
-}
-
 #uptime-container {
   margin: 1rem 0;
 }
 
 @media screen and (max-width: 400px) {
-  .ui .modal {
-    width: 340px;
-  }
   .ui.labeled.icon.button {
     font-size: 12px;
   }
