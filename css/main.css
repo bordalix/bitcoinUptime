@@ -12,6 +12,8 @@ a {
   }
 }
 
+dl { margin-top: 1.5em; }
+
 dt {
   background:rgba(0, 0, 0, 0.1);
   color:rgba(0, 0, 0, 0.68);

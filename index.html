@@ -18,6 +18,7 @@
     <i class="close icon"></i>
     <div class="header">CVE-2010-5139</div>
     <div class="content">
+      <p>The value overflow incident</p>
       <dl>
         <dt>From</dt>
         <dd>Aug 16 2010 12:53:59 AM</dd>
@@ -29,6 +30,8 @@
         <dd><a href="https://blockexplorer.com/block/000000000069e1affe7161ab4bcbeacebb4ddf155b50e807f42de971b688a09b">74638</a> to <a href="https://blockexplorer.com/block/00000000005c22d199706df1c38b38d76f8401920dcbe91edf3417f8847da707">74691</a></dd>
         <dt>Discussion</dt>
         <dd><a href="https://en.bitcoin.it/wiki/Value_overflow_incident">https://en.bitcoin.it/wiki/Value_overflow_incident</a></dd>
+        <dt>Media</dt>
+        <dd><a href="https://bitcoinmagazine.com/articles/bitcoin-network-shaken-by-blockchain-fork-1363144448/">https://bitcoinmagazine.com/articles/bitcoin-network-shaken-by-blockchain-fork-1363144448/</a></dd>
       </dl>
     </div>
   </div>
@@ -37,17 +40,20 @@
       <i class="close icon"></i>
       <div class="header">CVE-2013-3220</div>
       <div class="content">
+        <p>The Berkeley DB locks incident</p>
         <dl>
           <dt>From</dt>
-          <dd>Aug 16 2013 6:49:03 AM</dd>
+          <dd>Mar 11, 2013 11:24:19 PM</dd>
           <dt>Until</dt>
-          <dd>Aug 16 2013 1:09:07 PM</dd>
+          <dd>Mar 12, 2013 6:19:32 AM</dd>
           <dt>Downtime</dt>
-          <dd>6 hours and 20 minutes</dd>
+          <dd>6 hours and 55 minutes</dd>
           <dt>Blocks</dt>
-          <dd><a href="https://blockexplorer.com/block/0000000000000020dc045c540e8ce5960b3a71e7cec30f2ebd55c373d1eda362">252404</a> to <a href="https://blockexplorer.com/block/0000000000000024b58eeb1134432f00497a6a860412996e7a260f47126eed07">252451</a></dd>
+          <dd><a href="https://blockexplorer.com/block/00000000000001c108384350f74090433e7fcf79a606b8e797f065b130575932">225430</a> to <a href="https://blockexplorer.com/block/00000000000001976860e9e35b20b8ebe22c35f813a40962c25ead9fbd89510b">225454</a></dd>
           <dt>Discussion</dt>
           <dd><a href="https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki">https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki</a></dd>
+          <dt>Media</dt>
+          <dd><a href="https://bitcoinmagazine.com/articles/bitcoin-network-shaken-by-blockchain-fork-1363144448/">https://bitcoinmagazine.com/articles/bitcoin-network-shaken-by-blockchain-fork-1363144448/</a></dd>
         </dl>
       </div>
     </div>
@@ -59,7 +65,7 @@
 
     <h3 style="margin-top: 5em;">Downtime events</h3>
     <p><a id="CVE-2010-5139">CVE-2010-5139:</a> 8 hours and 27 minutes</p>
-    <p><a id="CVE-2013-3220">CVE-2013-3220:</a> 6 hours and 20 minutes</p>
+    <p><a id="CVE-2013-3220">CVE-2013-3220:</a> 6 hours and 55 minutes</p>
 
     <h3 style="margin-top: 5em;">Contributions</h3>
     <h4>Bitcoin</h4>
@@ -83,9 +89,9 @@
       // Discussion https://github.com/findbl0k/bitcoinUptime/issues/3
       var downtime2010 = 30420;
 
-      // Downtime for CVE-2013-3220: 6 hours, 20 minutes or 380 minutes = 22800 seconds.
+      // Downtime for CVE-2013-3220: 6 hours, 55 minutes or 415 minutes = 24900 seconds.
       // See https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki
-      var downtime2013 = 22800;
+      var downtime2013 = 24900;
 
       var downtimeTotal = downtime2010 + downtime2013;
 
