@@ -11,22 +11,6 @@
     <script src="scripts/jquery-3.1.1.min.js"></script>
     <script src="scripts/semantic.min.js"></script>
     <script src="scripts/tips.js"></script>
-    <style>
-      .button-filled {
-        width: 120px;
-        min-width: 30px;
-        height: 40px;
-        line-height: 2.5;
-        text-align: center;
-        cursor: pointer;
-        background: #fc7e7e;
-        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.20);
-        border-radius: 4px;
-        font-family: Futura, Helvetica;
-        font-size: 16px;
-        color: #FFFFFF;
-      }
-    </style>
   </head>
   <body>
     <div id="CVE-2010-5139-modal" class="ui tiny modal">
@@ -91,6 +75,7 @@
 
     <div class="ui container" style="padding-top: 2em; text-align: center;">
       <p>The Bitcoin network is working for</p>
+      <!-- value to show when browser is with javascript disabled -->
       <h1 id="uptime-container">99.9827 %</h1>
       <p>of the time since Jan 3 2009 02:54:25 GMT</p>
 
@@ -112,6 +97,7 @@
       <h4>Lightning</h4>
       <!-- Beginning of tippin.me Button -->
       <div id="tippin-button" style="margin: 0 auto" data-dest="bordalix" class="button-filled">
+        <!-- this <a> tag just for it to work without javascript -->
         <a href="https://tippin.me/@bordalix" style="color:#fff;">⚡️ tippin.me</a>
       </div>
       <!-- End of tippin.me Button -->
@@ -152,7 +138,7 @@
       setInterval(displayUptime, 1000);
 
       $(function() {
-        // hrefs are in place for this to work without javascript
+        // hrefs were in place just for it to work without javascript
         // if javascript is enabled, show the modal instead
         $('#CVE-2010-5139').removeAttr('href');
         $('#CVE-2010-5139').click(function() {
