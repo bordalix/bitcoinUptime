@@ -73,13 +73,41 @@
       </div>
     </div>
 
+    <div id="halving-modal" class="ui tiny modal">
+      <i class="close icon"></i>
+      <div class="header">Next halving</div>
+      <div class="content">
+        <p>Calculated with btc.com api data</p>
+        <dl>
+          <dt>Latest block <sup>a</sup></dt>
+          <dd id="latest-height"></dd>
+          <dt>Timestamp <sup>b</sup></dt>
+          <dd id="latest-timestamp"></dd>
+          <dt>Time ago</dt>
+          <dd id="latest-time-ago"></dd>
+          <dt>Distance <sup>c</sup></dt>
+          <dd>8640 blocks (~2 months)</dd>
+          <dt>From block</dt>
+          <dd id="from-height"></dd>
+          <dt>Timestamp <sup>d</sup></dt>
+          <dd id="from-timestamp"></dd>
+          <dt>Avg p/ block <sup>e</sup></dt>
+          <dd id="average-time"></dd>
+          <dt>To halving <sup>f</sup></dt>
+          <dd id="halving-blocks"></dd>
+          <dt>Timestamp</dt>
+          <dd id="halving-timestamp"></dd>
+        </dl>
+      </div>
+    </div>
+
     <div class="ui container" style="padding-top: 2em; text-align: center;">
       <p>The Bitcoin network is working for</p>
       <!-- value to show when browser is with javascript disabled -->
-      <h1 id="uptime-container">99.9827 %</h1>
+      <h1 id="uptime-container">99.9842 %</h1>
       <p>of the time since Jan 3 2009 02:54:25 GMT</p>
 
-      <h3 style="margin-top: 5em;">Downtime events</h3>
+      <h3 style="margin-top: 3em;">Downtime events</h3>
       <p>
         <a href="https://en.bitcoin.it/wiki/Value_overflow_incident" id="CVE-2010-5139">CVE-2010-5139:</a>
         8 hours and 27 minutes
@@ -89,7 +117,12 @@
         6 hours and 55 minutes
       </p>
 
-      <h3 style="margin-top: 5em;">Contributions</h3>
+      <h3 style="margin-top: 3em;">Next halving</h3>
+      <p id="halving-container">Sun May 10 2020 10:11:31 GMT+0100</p>
+      <p id="countdown-container" style="visibility:hidden"></p>
+      <p><a id="halving" style="visibility:hidden">Know more</a></p>
+
+      <h3 style="margin-top: 3em;">Contributions</h3>
       <h4>Bitcoin</h4>
       <a title="donations keep this server up :)" href="bitcoin:3J8QGWo5Qjpz5X9kQYK7VnD2p3aXKtTgfM" class="ui labeled icon button">
         <i class="ui bitcoin icon"></i>3J8QGWo5Qjpz5X9kQYK7VnD2p3aXKtTgfM
@@ -108,6 +141,129 @@
     </div>
 
     <script>
+      // use btc.com api to calculate next halving
+      function getHalving() {
+        // how many blocks to calculate average (2 months)
+        const distance = 6 * 24 * 60;
+        // all blocks needed to calculate halving date
+        const blocks = {
+          halving: {
+            height: 630000,
+            timestamp: null,
+          },
+          latest: {
+            height: null,
+            timestamp: null,
+          },
+          sixty_days: {
+            height: null,
+            timestamp: null,
+          }
+        };
+        // format time since last block
+        function displayTimeAgo() {
+          const now = new Date().getTime() / 1000;
+          let seconds = parseInt(now - blocks.latest.timestamp);
+          const minutes = Math.floor(seconds / 60);
+          seconds -= minutes * 60;
+          const time_ago = minutes + 'm ' + seconds + 's';
+          const latest_time_ago = document.getElementById('latest-time-ago');
+          latest_time_ago.innerHTML = time_ago;
+        }
+        // display countdown
+        function displayCountdown() {
+          const now = new Date().getTime() / 1000;
+          let seconds = parseInt(blocks.halving.timestamp - now);
+          const minute = 60;
+          const hour = 60 * minute;
+          const day = 24 * hour;
+          const days = Math.floor(seconds / day);
+          seconds -= days * day;
+          const hours = Math.floor(seconds / hour);
+          seconds -= hours * hour;
+          const minutes = Math.floor(seconds / minute);
+          seconds -= minutes * minute;
+          const countdown = days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's';
+          const countdown_container = document.getElementById('countdown-container');
+          countdown_container.innerHTML = countdown;
+        }
+        // return api url for a given block
+        function apiURL(block) {
+          const prefix = 'https://chain.api.btc.com/v3/block/';
+          if (block === 'latest') return prefix + 'latest';
+          if (block === 'sixty_days') return prefix + blocks.sixty_days.height;
+          return null;
+        }
+        // fetch latest block
+        fetch(apiURL('latest'))
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(json) {
+            // add data to blocks
+            blocks.latest.height     = json.data.height;
+            blocks.latest.timestamp  = json.data.timestamp;
+            blocks.sixty_days.height = json.data.height - distance;
+            // fetch older block to calculate block time average
+            fetch(apiURL('sixty_days'))
+              .then(function(response) {
+                return response.json();
+              })
+              .then(function(json) {
+                // add data to blocks
+                blocks.sixty_days.timestamp = json.data.timestamp;
+                // calculate average time per block
+                const avg_time_block = (blocks.latest.timestamp - blocks.sixty_days.timestamp) / distance;
+                // calculate how many blocks until halving
+                const blocks_until_halving = blocks.halving.height - blocks.latest.height;
+                // calculate time to halving
+                const time_to_halving = blocks_until_halving * avg_time_block;
+                // finally, calculate timestamp for halving block
+                blocks.halving.timestamp = blocks.latest.timestamp + time_to_halving;
+                // render data on UI
+                const halving_container = document.getElementById('halving-container');
+                halving_container.innerHTML = new Date(blocks.halving.timestamp * 1000);
+                // modal latest height
+                const latest_height = document.getElementById('latest-height');
+                latest_height.innerHTML = blocks.latest.height;
+                // modal
+                const latest_timestamp = document.getElementById('latest-timestamp');
+                latest_timestamp.innerHTML = blocks.latest.timestamp;
+                // modal
+                const from_height = document.getElementById('from-height');
+                from_height.innerHTML = blocks.sixty_days.height + ' <sup>a-c</sup>';
+                // modal
+                const from_timestamp = document.getElementById('from-timestamp');
+                from_timestamp.innerHTML = blocks.sixty_days.timestamp;
+                // modal
+                const average_time = document.getElementById('average-time');
+                average_time.innerHTML = parseInt(avg_time_block) + ' seconds <sup>(b-d)/c</sup>';
+                // modal
+                const halving_blocks = document.getElementById('halving-blocks');
+                halving_blocks.innerHTML = blocks_until_halving + ' blocks <sup>630000-a</sup>';
+                // modal
+                const halving_timestamp = document.getElementById('halving-timestamp');
+                halving_timestamp.innerHTML = parseInt(blocks.halving.timestamp) + ' <sup>d*e</sup>';
+                // start countdown to halving
+                displayCountdown();
+                setInterval(displayCountdown, 1000);
+                // start time ago since last block
+                displayTimeAgo();
+                setInterval(displayTimeAgo, 1000);
+                // show countdown to halving
+                $('#countdown-container').css('visibility', 'visible');
+                // show more link
+                $('#halving').css('visibility', 'visible');
+              })
+              .catch(function(err) {
+                console.warn('Something went wrong fetching sixty days block', err);
+              });
+          })
+          .catch(function(err) {
+            console.warn('Something went wrong fetching latest block', err);
+          });
+      }
+
       function displayUptime() {
         // Current time in seconds from the unix epoch start
         var timenow = Math.floor(new Date().getTime() / 1000);
@@ -141,13 +297,11 @@
         // hrefs were in place just for it to work without javascript
         // if javascript is enabled, show the modal instead
         $('#CVE-2010-5139').removeAttr('href');
-        $('#CVE-2010-5139').click(function() {
-          $('#CVE-2010-5139-modal').modal('show');
-        });
         $('#CVE-2013-3220').removeAttr('href');
-        $('#CVE-2013-3220').click(function() {
-          $('#CVE-2013-3220-modal').modal('show');
-        });
+        $('#CVE-2010-5139').click(function() { $('#CVE-2010-5139-modal').modal('show'); });
+        $('#CVE-2013-3220').click(function() { $('#CVE-2013-3220-modal').modal('show'); });
+        $('#halving').click(function() { $('#halving-modal').modal('show'); });
+        getHalving();
       });
     </script>
   </body>
