@@ -92,7 +92,7 @@
       <i class="close icon"></i>
       <div class="header">Next halving</div>
       <div class="content">
-        <p>Calculated with btc.com api data</p>
+        <p>Calculated with blockcypher.com api data</p>
         <dl>
           <dt>Latest block <sup>a</sup></dt>
           <dd id="latest-height"></dd>
@@ -175,6 +175,9 @@
             timestamp: null,
           }
         };
+        function time2timestamp(time) {
+          return Math.round(Date.parse(time) / 1000);
+        }
         // format time since last block
         function displayTimeAgo() {
           const now = new Date().getTime() / 1000;
@@ -204,9 +207,9 @@
         }
         // return api url for a given block
         function apiURL(block) {
-          const prefix = 'https://chain.api.btc.com/v3/block/';
-          if (block === 'latest') return prefix + 'latest';
-          if (block === 'sixty_days') return prefix + blocks.sixty_days.height;
+          const prefix = 'https://api.blockcypher.com/v1/btc/main';
+          if (block === 'latest') return prefix;
+          if (block === 'sixty_days') return prefix + '/blocks/' + blocks.sixty_days.height;
           return null;
         }
         // fetch latest block
@@ -216,9 +219,9 @@
           })
           .then(function(json) {
             // add data to blocks
-            blocks.latest.height     = json.data.height;
-            blocks.latest.timestamp  = json.data.timestamp;
-            blocks.sixty_days.height = json.data.height - distance;
+            blocks.latest.height     = json.height;
+            blocks.latest.timestamp  = time2timestamp(json.time);
+            blocks.sixty_days.height = json.height - distance;
             // fetch older block to calculate block time average
             fetch(apiURL('sixty_days'))
               .then(function(response) {
@@ -226,7 +229,7 @@
               })
               .then(function(json) {
                 // add data to blocks
-                blocks.sixty_days.timestamp = json.data.timestamp;
+                blocks.sixty_days.timestamp = time2timestamp(json.time);
                 // calculate average time per block
                 const avg_time_block = (blocks.latest.timestamp - blocks.sixty_days.timestamp) / distance;
                 // calculate how many blocks until halving
